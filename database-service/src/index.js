@@ -1,9 +1,11 @@
-import express from 'express'
+const app = require('express')()
 
-const app = express()
+require('dotenv').config()
+
+
 
 app.get('/', (req, res) => {
-  res.json({ message: 'database service' })
+  res.json({ message: JSON.stringify(process.env) })
 })
 
 const port = 3000
