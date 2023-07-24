@@ -20,6 +20,39 @@ async function createUser(req, res) {
   }
 }
 
+async function deleteUser(req, res) {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ error: true, errors: errors.array() });
+      return;
+    }
+
+    const { userId } = req.body;
+
+    const deletedUser = await User.destroy({
+      where: {
+        id: userId
+      }
+    });
+
+    if (!deletedUser) {
+      res
+        .status(404)
+        .json({ error: true, message: `No user found with id ${userId}` });
+      return;
+    }
+
+    res.status(200).json({
+      error: false,
+      message: `Successfully delete user with id ${userId}`
+    });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.toString() });
+  }
+}
+
 module.exports = {
-  createUser
+  createUser,
+  deleteUser
 };
