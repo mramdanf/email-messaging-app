@@ -1,7 +1,9 @@
-const express = require('express')
-const router = express.Router()
-const userController = require('../controllers/userController')
+const express = require('express');
+const { body } = require('express-validator');
 
-router.post('/', userController.createUser)
+const router = express.Router();
+const userController = require('../controllers/userController');
 
-module.exports = router
+router.post('/', body('firstName').not().isEmpty(), userController.createUser);
+
+module.exports = router;

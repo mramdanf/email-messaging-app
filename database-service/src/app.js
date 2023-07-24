@@ -1,18 +1,20 @@
-require('dotenv').config()
-const express = require('express')
+require('dotenv').config();
+const express = require('express');
 
-const usersRouter = require('./routes/user')
-const app = express()
+const usersRouter = require('./routes/user');
 
-app.use(express.json())
-app.use('/users', usersRouter)
+const app = express();
+
+app.use(express.json());
+app.use('/users', usersRouter);
 
 app.get('/', (req, res) => {
-  res.json({ message: JSON.stringify(process.env) })
-})
+  res.json({ message: JSON.stringify(process.env) });
+});
 
-const port = process.env.APP_PORT || 3000
+const port = process.env.APP_PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`server listening on http://localhost:${port}`)
-})
+  // eslint-disable-next-line no-console
+  console.log(`server listening on http://localhost:${port}`);
+});
