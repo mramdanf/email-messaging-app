@@ -18,7 +18,7 @@ module.exports = {
       },
       firstName: Sequelize.STRING,
       lastName: Sequelize.STRING,
-      emial: Sequelize.STRING(100),
+      email: Sequelize.STRING(100),
       birthDayDate: Sequelize.DATE,
       location: Sequelize.STRING(100),
     });
