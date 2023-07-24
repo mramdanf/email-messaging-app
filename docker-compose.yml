@@ -7,3 +7,14 @@ services:
       dockerfile: ./database-service.Dockerfile
     ports:
       - "3000:3000"
+
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: todos
+
+volumes:
+  mysql-data:
