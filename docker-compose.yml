@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  database-services:
+    build:
+      context: ./database-service
+      dockerfile: ./database-service.Dockerfile
+    ports:
+      - "3000:3000"
