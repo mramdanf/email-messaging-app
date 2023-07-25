@@ -108,21 +108,15 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
     const user = users[index];
     const { birthDay, locale } = getUserBirthDayAndLocale(user);
 
+    console.log(`### user: ${user.firstName} ###`);
+
     const shouldSendMessage =
       birthDay.month === locale.month &&
       birthDay.date === locale.date &&
       locale.hour === sendAtHour;
 
     if (!shouldSendMessage) {
-      console.log('will not send message. ');
-      console.log(
-        JSON.stringify({
-          birthDay,
-          locale,
-          user: { id: users.id, firstName: user.firstName },
-          sendAtHour
-        })
-      );
+      console.log('will not send message. Condition not satisfied.');
       continue;
     }
 
@@ -143,15 +137,19 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
 
     if (messageAlreadySent.sentAlready) {
       console.log(
-        `birthday messge already sent for user ${user.firstName} for year ${locale.year}`
+        `will not send message. Birthday messge already sent for user ${user.firstName} for year ${locale.year}`
       );
       continue;
     }
 
     console.log('sending mail through mail service...');
+    const messageBody = message.messages.replace(
+      '{full_name}',
+      `${user.firstName} ${user.lastName}`
+    );
     const sendMailResult = await sendMail({
       email: user.email,
-      message: message.messages
+      message: messageBody
     });
     if (sendMailResult.error) {
       console.error(sendMailResult.errorMessage);
@@ -169,7 +167,9 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
       continue;
     }
 
-    console.log(`successfully sent birthday message to ${user.firstName}`);
+    console.log(
+      `successfully sent birthday message "${messageBody}" to ${user.firstName}`
+    );
   }
 }
 

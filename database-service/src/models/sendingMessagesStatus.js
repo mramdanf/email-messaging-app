@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM,
         values: ['success', 'error']
       },
-      sentTime: DataTypes.DATE
+      sentTime: DataTypes.STRING
     },
     {
       sequelize,

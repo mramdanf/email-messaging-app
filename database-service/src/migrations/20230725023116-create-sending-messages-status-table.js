@@ -38,7 +38,7 @@ module.exports = {
         type: Sequelize.ENUM,
         values: ['success', 'error']
       },
-      sentTime: Sequelize.DATE
+      sentTime: Sequelize.STRING
     });
   },
 

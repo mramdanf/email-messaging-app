@@ -18,7 +18,7 @@ const port = process.env.APP_PORT || 3000;
 cron.schedule('*/60 * * * *', () => {
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(MESSAGE_TYPES.BIRTH_DAY, 17);
+  sendBirthDayMessage(MESSAGE_TYPES.BIRTH_DAY, 9);
 });
 
 app.listen(port, () => {

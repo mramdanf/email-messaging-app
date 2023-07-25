@@ -17,7 +17,7 @@ module.exports = {
       [
         {
           messageType: 'birth-day',
-          messages: 'Happy birth day {name} whish you all the best'
+          messages: 'Hey, {full_name} it’s your birthday'
         },
         {
           messageType: 'anniversary-day',
