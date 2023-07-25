@@ -80,7 +80,8 @@ async function logSendMessageResult({ user, message, sentStatus }) {
         ? moment(sentStatus.sentTime)
             .tz(user.location)
             .format('YYYY-MM-DD HH:mm:ss')
-        : ''
+        : '',
+      descriptions: sentStatus.descriptions
     });
     return {
       error: false,
@@ -162,7 +163,8 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
     console.log('logging send mail status...');
     const sentStatus = {
       status: sendMailResult.error ? 'error' : 'sent',
-      sentTime: sendMailResult.error ? '' : sendMailResult.data.sentTime
+      sentTime: sendMailResult.error ? '' : sendMailResult.data.sentTime,
+      descriptions: sendMailResult.error ? sendMailResult.errorMessage : ''
     };
     const logSendingStatus = await logSendMessageResult({
       user,

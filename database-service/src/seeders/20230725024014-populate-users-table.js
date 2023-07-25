@@ -1,5 +1,7 @@
 'use strict';
 
+const faker = require('faker');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
@@ -14,29 +16,13 @@ module.exports = {
      */
     await queryInterface.bulkInsert(
       'users',
-      [
-        {
-          firstName: 'Mohamad Ramdan',
-          lastName: 'Firdaus',
-          email: 'asdf@gmail.com',
-          birthDayDate: '1997-07-25',
-          location: 'Asia/Jakarta'
-        },
-        {
-          firstName: 'lisda',
-          lastName: 'adistiani',
-          email: 'ldis@gmail.com',
-          birthDayDate: '1999-07-25',
-          location: 'Asia/Makassar'
-        },
-        {
-          firstName: 'azfar',
-          lastName: 'ramdhani',
-          email: 'ldis@gmail.com',
-          birthDayDate: '1999-07-25',
-          location: 'Pacific/Wake'
-        }
-      ],
+      [...Array(100)].map(() => ({
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        email: faker.internet.email(),
+        location: 'Asia/Jakarta',
+        birthDayDate: '1994-07-25'
+      })),
       {}
     );
   },

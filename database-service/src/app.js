@@ -14,7 +14,7 @@ app.use('/users', usersRouter);
 
 const port = process.env.APP_PORT || 3000;
 
-cron.schedule('*/60 * * * *', async () => {
+cron.schedule('*/10 * * * * *', async () => {
   const { sendBirthDayMessageFinished } = await checkCronJobFinished();
   if (!sendBirthDayMessageFinished) {
     console.log('cancel sending message, prev job not finished yet.');
@@ -22,7 +22,7 @@ cron.schedule('*/60 * * * *', async () => {
   }
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(MESSAGE_TYPES.BIRTH_DAY, 19);
+  sendBirthDayMessage(MESSAGE_TYPES.BIRTH_DAY, 20);
 });
 
 app.listen(port, () => {
