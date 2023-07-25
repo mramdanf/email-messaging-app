@@ -1,8 +1,9 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-continue */
 const sequelize = require('sequelize');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const moment = require('moment-timezone');
+const { sendMail } = require('../helper/mailService');
 
 const { Op } = sequelize;
 const { SendingMessagesStatus, Messages, User } = require('../models');
@@ -52,7 +53,7 @@ async function sendBirthDayMessage(req, res) {
       const shouldSendMessage =
         birthDay.month === locale.month &&
         birthDay.date === locale.date &&
-        locale.hour === 12;
+        locale.hour === 13;
 
       if (!shouldSendMessage) {
         continue;
@@ -64,6 +65,7 @@ async function sendBirthDayMessage(req, res) {
         }
       });
 
+      // check if already send birthday message for given user on this year
       const sendingStatus = await SendingMessagesStatus.findAll({
         where: {
           [Op.and]: [
@@ -82,13 +84,21 @@ async function sendBirthDayMessage(req, res) {
         continue;
       }
 
-      // TODO: http post to the send mail service
+      const { data } = await sendMail({
+        message: messageForBirthDay.messages.replace(
+          '{name}',
+          `${user.fistName} ${user.lastName}`
+        ),
+        email: user.email
+      });
 
       await SendingMessagesStatus.create({
         userId: user.id,
         messageId: messageForBirthDay.id,
-        sentStatus: 'success',
-        sentTime: moment().tz(user.location).format('YYYY-MM-DD HH:mm:ss')
+        sentStatus: data.status === 'sent' ? 'success' : 'error',
+        sentTime: moment(data.sentTime)
+          .tz(user.location)
+          .format('YYYY-MM-DD HH:mm:ss')
       });
     }
 
