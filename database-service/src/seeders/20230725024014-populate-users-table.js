@@ -19,13 +19,15 @@ module.exports = {
           firstName: 'Mohamad Ramdan',
           lastName: 'Firdaus',
           email: 'asdf@gmail.com',
-          birthDayDate: '1997-06-04'
+          birthDayDate: '1997-06-04',
+          location: 'Asia/Jakarta'
         },
         {
           firstName: 'lisda',
           lastName: 'adistiani',
           email: 'ldis@gmail.com',
-          birthDayDate: '1999-03-20'
+          birthDayDate: '1999-03-20',
+          location: 'Asia/Makassar'
         }
       ],
       {}

@@ -82,7 +82,6 @@ async function updateUser(req, res) {
 
 async function getUsersByBirthDay(req, res) {
   try {
-    console.log(req.query.date);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400).json({ error: true, errors: errors.array() });
