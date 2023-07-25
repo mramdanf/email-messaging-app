@@ -5,13 +5,11 @@ const { sendBirthDayMessage } = require('./helper/sendMessageToUsers');
 const { MESSAGE_TYPES } = require('./contants');
 
 const usersRouter = require('./routes/user');
-const sendingMessagesRouter = require('./routes/sendingMessage');
 
 const app = express();
 
 app.use(express.json());
 app.use('/users', usersRouter);
-app.use('/send-message', sendingMessagesRouter);
 
 const port = process.env.APP_PORT || 3000;
 
