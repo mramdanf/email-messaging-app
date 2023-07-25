@@ -17,7 +17,6 @@ const createAndUpdateRules = (controllerFunc, additionalRules = []) => [
   body('firstName').not().isEmpty(),
   body('lastName').not().isEmpty(),
   body('email').isEmail(),
-  body('location').matches(/^[A-Z]\w+(\/[A-Z]\w+)+$/gm),
   userBirthDayRules,
   ...additionalRules,
   controllerFunc

@@ -8,7 +8,9 @@ module.exports = {
     password: null,
     database: `${DB_NAME}`,
     host: `${DB_HOSTNAME}`,
-    dialect: `${DB_DIALECT}`
+    dialect: `${DB_DIALECT}`,
+    logQueryParameters: true,
+    timezone: '+07:00'
   },
   test: {
     username: 'root',
