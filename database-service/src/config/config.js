@@ -10,7 +10,8 @@ module.exports = {
     host: `${DB_HOSTNAME}`,
     dialect: `${DB_DIALECT}`,
     logQueryParameters: true,
-    timezone: '+07:00'
+    timezone: '+07:00',
+    logging: false
   },
   test: {
     username: 'root',

@@ -1,9 +1,9 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-continue */
 const sequelize = require('sequelize');
 const moment = require('moment-timezone');
 const { sendMail } = require('../helper/mailService');
+const { getUserBirthDayAndLocale } = require('../helper/misc');
 
 const { Op } = sequelize;
 const { SendingMessagesStatus, Messages, User } = require('../models');
@@ -38,17 +38,7 @@ async function sendBirthDayMessage(req, res) {
     for (let index = 0; index < users.length; index++) {
       const user = users[index];
 
-      const birthDay = {
-        month: moment(user.birthDayDate).month() + 1,
-        date: moment(user.birthDayDate).date()
-      };
-      const locale = {
-        month: moment().tz(user.location).month() + 1,
-        date: moment().tz(user.location).date(),
-        minute: moment().tz(user.location).minute(),
-        hour: moment().tz(user.location).hour(),
-        year: moment().tz(user.location).year()
-      };
+      const { birthDay, locale } = getUserBirthDayAndLocale(user);
 
       const shouldSendMessage =
         birthDay.month === locale.month &&
