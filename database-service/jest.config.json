@@ -10,6 +10,7 @@
   "coveragePathIgnorePatterns": [
     "node_modules",
     "src/migrations",
-    "src/seeder"
+    "src/seeder",
+    "src/app.js"
   ]
 }
