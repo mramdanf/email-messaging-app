@@ -52,7 +52,35 @@ async function deleteUser(req, res) {
   }
 }
 
+async function updateUser(req, res) {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(400).json({ error: true, errors: errors.array() });
+      return;
+    }
+
+    const { userId, ...rest } = req.body;
+
+    await User.update(
+      { ...rest },
+      {
+        where: {
+          id: userId
+        }
+      }
+    );
+    res.status(200).json({
+      error: false,
+      message: `Successfully update the user with id ${userId}`
+    });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.toString() });
+  }
+}
+
 module.exports = {
   createUser,
-  deleteUser
+  deleteUser,
+  updateUser
 };
