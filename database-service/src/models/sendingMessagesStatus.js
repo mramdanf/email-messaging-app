@@ -1,6 +1,7 @@
 'use strict';
 
 const { Model } = require('sequelize');
+const { SENT_MESSAGE_STATUS } = require('../contants');
 
 module.exports = (sequelize, DataTypes) => {
   class SendingMessagesStatus extends Model {
@@ -45,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       sentStatus: {
         type: DataTypes.ENUM,
-        values: ['success', 'error']
+        values: [SENT_MESSAGE_STATUS.SUCCESS, SENT_MESSAGE_STATUS.ERROR]
       },
       sentTime: DataTypes.STRING,
       descriptions: DataTypes.STRING

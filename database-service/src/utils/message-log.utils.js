@@ -1,6 +1,7 @@
 const moment = require('moment-timezone');
 const sequelize = require('sequelize');
 const { SendingMessagesStatus, Messages, User } = require('../models');
+const { SENT_MESSAGE_STATUS } = require('../contants');
 
 const { Op } = sequelize;
 
@@ -27,7 +28,7 @@ async function findSendMessageErrorLog() {
   try {
     const logs = await SendingMessagesStatus.findAll({
       where: {
-        sentStatus: 'error'
+        sentStatus: SENT_MESSAGE_STATUS.ERROR
       },
       include: [
         {
@@ -62,7 +63,9 @@ async function createSendMessageLog({ user, message, sendMailResult }) {
     const loggingStatus = await SendingMessagesStatus.create({
       userId: user.id,
       messageId: message.id,
-      sentStatus: error ? 'error' : 'success',
+      sentStatus: error
+        ? SENT_MESSAGE_STATUS.ERROR
+        : SENT_MESSAGE_STATUS.SUCCESS,
       sentTime: error
         ? ''
         : moment(data.sentTime).tz(user.location).format('YYYY-MM-DD HH:mm:ss'),
@@ -88,7 +91,6 @@ async function checkSendMessageLogByYear({ userId, messageId, year }) {
       where: {
         [Op.and]: [
           { userId },
-          { sentStatus: 'success' },
           { messageId },
           sequelize.where(sequelize.fn('year', sequelize.col('sentTime')), year)
         ]

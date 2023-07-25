@@ -1,5 +1,7 @@
 'use strict';
 
+const { SENT_MESSAGE_STATUS } = require('../contants');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -36,7 +38,7 @@ module.exports = {
       },
       sentStatus: {
         type: Sequelize.ENUM,
-        values: ['success', 'error']
+        values: [SENT_MESSAGE_STATUS.SUCCESS, SENT_MESSAGE_STATUS.ERROR]
       },
       descriptions: Sequelize.STRING,
       sentTime: Sequelize.STRING
