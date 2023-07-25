@@ -9,7 +9,6 @@ function getUserBirthDayAndLocale(user) {
   const locale = {
     month: moment().tz(user.location).month() + 1,
     date: moment().tz(user.location).date(),
-    minute: moment().tz(user.location).minute(),
     hour: moment().tz(user.location).hour(),
     year: moment().tz(user.location).year()
   };

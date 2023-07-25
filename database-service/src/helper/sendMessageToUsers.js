@@ -114,6 +114,15 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
       locale.hour === sendAtHour;
 
     if (!shouldSendMessage) {
+      console.log('will not send message. ');
+      console.log(
+        JSON.stringify({
+          birthDay,
+          locale,
+          user: { id: users.id, firstName: user.firstName },
+          sendAtHour
+        })
+      );
       continue;
     }
 
