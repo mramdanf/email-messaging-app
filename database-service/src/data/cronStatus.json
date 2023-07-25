@@ -1,5 +1,8 @@
 {
 	"sendBirthDayMessage": {
+		"finished": false
+	},
+	"resendingMessageOnError": {
 		"finished": true
 	}
 }

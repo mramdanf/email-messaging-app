@@ -2,15 +2,26 @@ const axios = require('axios');
 
 const baseUrl = 'https://email-service.digitalenvision.com.au';
 
-async function sendMail(payload) {
+async function sendMail({ user, message }) {
   try {
+    const messageBody = message.messages.replace(
+      '{full_name}',
+      `${user.firstName} ${user.lastName}`
+    );
+    const payload = {
+      email: user.email,
+      message: messageBody
+    };
     const { data } = await axios.post(`${baseUrl}/send-email`, payload, {
       headers: {
         'Content-type': 'application/json'
       }
     });
     return {
-      data,
+      data: {
+        ...data,
+        messageBody
+      },
       error: false,
       errorMessage: ''
     };

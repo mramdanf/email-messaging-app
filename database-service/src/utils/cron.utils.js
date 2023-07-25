@@ -6,31 +6,40 @@ function getCronJobStatusFile() {
   return path.join(process.cwd(), 'src', 'data', 'cronStatus.json');
 }
 
-async function saveCronJobStatus(data) {
-  try {
-    await fs.writeFile(
-      getCronJobStatusFile(),
-      JSON.stringify(data, null, '\t')
-    );
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 async function checkCronJobFinished() {
   const filePath = getCronJobStatusFile();
   try {
     const fileData = await fs.readFile(filePath);
     const data = JSON.parse(fileData);
     return {
-      sendBirthDayMessageFinished: get(data, 'sendBirthDayMessage.finished'),
-      resendMessageOnError: get(data, 'resendMessageOnError.finished')
+      sendBirthDayMessage: {
+        finished: get(data, 'sendBirthDayMessage.finished', true)
+      },
+      resendingMessageOnError: {
+        finished: get(data, 'resendingMessageOnError.finished', true)
+      }
     };
   } catch (error) {
     return {
-      sendBirthDayMessageFinished: true,
-      resendMessageOnError: true
+      sendBirthDayMessage: { finished: true },
+      resendingMessageOnError: { finished: true }
     };
+  }
+}
+
+async function saveCronJobStatus(data) {
+  try {
+    const status = await checkCronJobFinished();
+    const allStatus = {
+      ...status,
+      ...data
+    };
+    await fs.writeFile(
+      getCronJobStatusFile(),
+      JSON.stringify(allStatus, null, '\t')
+    );
+  } catch (error) {
+    console.error(error);
   }
 }
 

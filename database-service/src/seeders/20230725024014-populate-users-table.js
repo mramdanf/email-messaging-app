@@ -21,7 +21,7 @@ module.exports = {
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
         location: 'Asia/Jakarta',
-        birthDayDate: '1994-07-25'
+        birthDayDate: '1994-07-26'
       })),
       {}
     );
