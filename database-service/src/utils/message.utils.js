@@ -1,27 +1,12 @@
 const sequelize = require('sequelize');
 const moment = require('moment-timezone');
-const { User, Messages, SendingMessagesStatus } = require('../models');
-const { getUserBirthDayAndLocale, saveCronJobStatus } = require('./misc');
-const { sendMail } = require('./mailService');
+const { Messages, SendingMessagesStatus } = require('../models');
+const { getUserBirthDayAndLocale, saveCronJobStatus } = require('./misc.utils');
+const { sendMail } = require('./mail.utils');
+const { MESSAGE_TYPES } = require('../contants');
+const { findAllUsers } = require('./user.utils');
 
 const { Op } = sequelize;
-
-async function findAllUsers() {
-  try {
-    const users = await User.findAll();
-    return {
-      error: false,
-      users,
-      errorMessage: ''
-    };
-  } catch (error) {
-    return {
-      error: true,
-      users: [],
-      errorMessage: error.toString()
-    };
-  }
-}
 
 async function findMessageByType(messageType) {
   try {
@@ -97,7 +82,7 @@ async function logSendMessageResult({ user, message, sentStatus }) {
   }
 }
 
-async function sendBirthDayMessage(messageType, sendAtHour) {
+async function sendBirthDayMessage(sendAtHour) {
   await saveCronJobStatus({ sendBirthDayMessage: { finished: false } });
 
   const findAllUserResult = await findAllUsers();
@@ -126,7 +111,7 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
     }
 
     console.log('finding message detail...');
-    const messageResult = await findMessageByType(messageType);
+    const messageResult = await findMessageByType(MESSAGE_TYPES.BIRTH_DAY);
     if (messageResult.error) {
       console.error(messageResult.errorMessage);
       continue;

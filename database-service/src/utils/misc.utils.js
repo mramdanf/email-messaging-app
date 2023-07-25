@@ -43,11 +43,13 @@ async function checkCronJobFinished() {
     const fileData = await fs.readFile(filePath);
     const data = JSON.parse(fileData);
     return {
-      sendBirthDayMessageFinished: get(data, 'sendBirthDayMessage.finished')
+      sendBirthDayMessageFinished: get(data, 'sendBirthDayMessage.finished'),
+      resendMessageOnError: get(data, 'resendMessageOnError.finished')
     };
   } catch (error) {
     return {
-      sendBirthDayMessageFinished: true
+      sendBirthDayMessageFinished: true,
+      resendMessageOnError: true
     };
   }
 }

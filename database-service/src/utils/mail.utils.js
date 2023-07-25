@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const axios = require('axios');
 
 const baseUrl = 'https://email-service.digitalenvision.com.au';

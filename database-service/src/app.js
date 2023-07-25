@@ -1,9 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cron = require('node-cron');
-const { sendBirthDayMessage } = require('./helper/sendMessageToUsers');
-const { MESSAGE_TYPES } = require('./contants');
-const { checkCronJobFinished } = require('./helper/misc');
+const { sendBirthDayMessage } = require('./utils/message.utils');
+const { checkCronJobFinished } = require('./utils/misc.utils');
 
 const usersRouter = require('./routes/user');
 
@@ -22,10 +21,22 @@ cron.schedule('*/10 * * * * *', async () => {
   }
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(MESSAGE_TYPES.BIRTH_DAY, 20);
+  sendBirthDayMessage(20);
+});
+
+cron.schedule('*/10 * * * * *', async () => {
+  const { resendMessageOnError } = await checkCronJobFinished();
+  if (!resendMessageOnError) {
+    console.log(
+      'cancel resending message on error, prev job not finished yet.'
+    );
+    return;
+  }
+  console.log('---------------------');
+  console.log('send birthday message scheduler running...');
+  sendBirthDayMessage(20);
 });
 
 app.listen(port, () => {
-  // eslint-disable-next-line no-console
   console.log(`server listening on http://localhost:${port}`);
 });
