@@ -1,0 +1,15 @@
+{
+  "collectCoverageFrom": ["src/**/*.{ts,js}"],
+  "coverageReporters": [
+    "text",
+    "json",
+    "lcov",
+    "html",
+    "text-summary"
+  ],
+  "coveragePathIgnorePatterns": [
+    "node_modules",
+    "src/migrations",
+    "src/seeder"
+  ]
+}
