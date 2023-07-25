@@ -94,7 +94,7 @@ async function getUsersByBirthDay(req, res) {
     const users = await User.findAll({
       where: {
         birthDayDate: {
-          [Op.eq]: `${birthDayDate} 00:00:00`
+          [Op.eq]: new Date(birthDayDate)
         }
       }
     });

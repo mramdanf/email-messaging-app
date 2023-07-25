@@ -19,7 +19,7 @@ module.exports = {
       firstName: Sequelize.STRING,
       lastName: Sequelize.STRING,
       email: Sequelize.STRING(100),
-      birthDayDate: Sequelize.DATE,
+      birthDayDate: Sequelize.DATEONLY,
       location: Sequelize.STRING(100)
     });
   },
