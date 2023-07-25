@@ -1,3 +1,4 @@
+const moment = require('moment-timezone');
 const { User } = require('../models');
 
 async function findAllUsers() {
@@ -17,6 +18,26 @@ async function findAllUsers() {
   }
 }
 
+function getUserBirthDayAndLocale(user) {
+  const birthDay = {
+    month: moment(user.birthDayDate).month() + 1,
+    date: moment(user.birthDayDate).date()
+  };
+
+  const locale = {
+    month: moment().tz(user.location).month() + 1,
+    date: moment().tz(user.location).date(),
+    hour: moment().tz(user.location).hour(),
+    year: moment().tz(user.location).year()
+  };
+
+  return {
+    birthDay,
+    locale
+  };
+}
+
 module.exports = {
-  findAllUsers
+  findAllUsers,
+  getUserBirthDayAndLocale
 };

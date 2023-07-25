@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cron = require('node-cron');
 const { sendBirthDayMessage } = require('./utils/message.utils');
-const { checkCronJobFinished } = require('./utils/misc.utils');
+const { checkCronJobFinished } = require('./utils/cron.utils');
 
 const usersRouter = require('./routes/user');
 

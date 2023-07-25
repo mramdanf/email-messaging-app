@@ -1,10 +1,10 @@
 const sequelize = require('sequelize');
 const moment = require('moment-timezone');
 const { Messages, SendingMessagesStatus } = require('../models');
-const { getUserBirthDayAndLocale, saveCronJobStatus } = require('./misc.utils');
+const { saveCronJobStatus } = require('./cron.utils');
 const { sendMail } = require('./mail.utils');
 const { MESSAGE_TYPES } = require('../contants');
-const { findAllUsers } = require('./user.utils');
+const { findAllUsers, getUserBirthDayAndLocale } = require('./user.utils');
 
 const { Op } = sequelize;
 
