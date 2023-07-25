@@ -33,7 +33,12 @@ module.exports = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL'
-      }
+      },
+      sentStatus: {
+        type: Sequelize.ENUM,
+        values: ['success', 'error']
+      },
+      sentTime: Sequelize.DATE
     });
   },
 
