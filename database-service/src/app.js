@@ -3,6 +3,7 @@ const express = require('express');
 const cron = require('node-cron');
 const { sendBirthDayMessage } = require('./helper/sendMessageToUsers');
 const { MESSAGE_TYPES } = require('./contants');
+const { checkCronJobFinished } = require('./helper/misc');
 
 const usersRouter = require('./routes/user');
 
@@ -13,10 +14,15 @@ app.use('/users', usersRouter);
 
 const port = process.env.APP_PORT || 3000;
 
-cron.schedule('*/60 * * * *', () => {
+cron.schedule('*/60 * * * *', async () => {
+  const { sendBirthDayMessageFinished } = await checkCronJobFinished();
+  if (!sendBirthDayMessageFinished) {
+    console.log('cancel sending message, prev job not finished yet.');
+    return;
+  }
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(MESSAGE_TYPES.BIRTH_DAY, 9);
+  sendBirthDayMessage(MESSAGE_TYPES.BIRTH_DAY, 19);
 });
 
 app.listen(port, () => {

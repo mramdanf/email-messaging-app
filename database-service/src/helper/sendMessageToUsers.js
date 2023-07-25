@@ -1,7 +1,7 @@
 const sequelize = require('sequelize');
 const moment = require('moment-timezone');
 const { User, Messages, SendingMessagesStatus } = require('../models');
-const { getUserBirthDayAndLocale } = require('./misc');
+const { getUserBirthDayAndLocale, saveCronJobStatus } = require('./misc');
 const { sendMail } = require('./mailService');
 
 const { Op } = sequelize;
@@ -76,9 +76,11 @@ async function logSendMessageResult({ user, message, sentStatus }) {
       userId: user.id,
       messageId: message.id,
       sentStatus: sentStatus.status === 'sent' ? 'success' : 'error',
-      sentTime: moment(sentStatus.sentTime)
-        .tz(user.location)
-        .format('YYYY-MM-DD HH:mm:ss')
+      sentTime: sentStatus.sentTime
+        ? moment(sentStatus.sentTime)
+            .tz(user.location)
+            .format('YYYY-MM-DD HH:mm:ss')
+        : ''
     });
     return {
       error: false,
@@ -95,6 +97,8 @@ async function logSendMessageResult({ user, message, sentStatus }) {
 }
 
 async function sendBirthDayMessage(messageType, sendAtHour) {
+  await saveCronJobStatus({ sendBirthDayMessage: { finished: false } });
+
   const findAllUserResult = await findAllUsers();
   console.log('geting all users data...');
   if (findAllUserResult.error) {
@@ -153,14 +157,17 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
     });
     if (sendMailResult.error) {
       console.error(sendMailResult.errorMessage);
-      continue;
     }
 
     console.log('logging send mail status...');
+    const sentStatus = {
+      status: sendMailResult.error ? 'error' : 'sent',
+      sentTime: sendMailResult.error ? '' : sendMailResult.data.sentTime
+    };
     const logSendingStatus = await logSendMessageResult({
       user,
       message,
-      sentStatus: sendMailResult.data
+      sentStatus
     });
     if (logSendingStatus.error) {
       console.error(logSendingStatus.errorMessage);
@@ -171,6 +178,7 @@ async function sendBirthDayMessage(messageType, sendAtHour) {
       `successfully sent birthday message "${messageBody}" to ${user.firstName}`
     );
   }
+  await saveCronJobStatus({ sendBirthDayMessage: { finished: true } });
 }
 
 module.exports = {
