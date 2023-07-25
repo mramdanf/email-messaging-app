@@ -2,11 +2,13 @@ require('dotenv').config();
 const express = require('express');
 
 const usersRouter = require('./routes/user');
+const sendingMessagesRouter = require('./routes/sendingMessage');
 
 const app = express();
 
 app.use(express.json());
 app.use('/users', usersRouter);
+app.use('/send-message', sendingMessagesRouter);
 
 app.get('/', (req, res) => {
   res.json({ message: JSON.stringify(process.env) });

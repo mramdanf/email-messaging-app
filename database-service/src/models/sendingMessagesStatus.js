@@ -10,8 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.User);
-      this.belongsTo(models.Messages);
+      this.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+      this.belongsTo(models.Messages, {
+        as: 'message',
+        foreignKey: 'messageId'
+      });
     }
   }
   SendingMessagesStatus.init(
@@ -22,6 +25,24 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         allowNull: false
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
+      messageId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'Messages',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+      },
       sentStatus: {
         type: DataTypes.ENUM,
         values: ['success', 'error']
@@ -30,7 +51,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'SendingMessagesStatus'
+      modelName: 'SendingMessagesStatus',
+      tableName: 'sendingMessagesStatus',
+      timestamps: false
     }
   );
   return SendingMessagesStatus;
