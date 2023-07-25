@@ -67,7 +67,7 @@ async function createSendMessageLog({ user, message, sendMailResult }) {
         ? SENT_MESSAGE_STATUS.ERROR
         : SENT_MESSAGE_STATUS.SUCCESS,
       sentTime: error
-        ? ''
+        ? moment().tz(user.location).format('YYYY-MM-DD HH:mm:ss')
         : moment(data.sentTime).tz(user.location).format('YYYY-MM-DD HH:mm:ss'),
       descriptions: error ? errorMessage : ''
     });

@@ -4,7 +4,7 @@ const cron = require('node-cron');
 const {
   sendBirthDayMessage,
   resendMessageOnError
-} = require('./utils/message.utils');
+} = require('./utils/send-message.utils');
 const { checkCronJobFinished } = require('./utils/cron.utils');
 
 const usersRouter = require('./routes/user');
@@ -26,7 +26,7 @@ cron.schedule('*/10 * * * * *', async () => {
   }
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(3);
+  sendBirthDayMessage(4);
 });
 
 cron.schedule('*/10 * * * * *', async () => {
