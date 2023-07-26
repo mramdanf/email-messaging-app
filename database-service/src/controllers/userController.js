@@ -27,31 +27,27 @@ async function createUser(req, res) {
 }
 
 async function deleteUser(req, res) {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ error: true, errors: errors.array() });
-      return;
-    }
-
-    const { userId } = req.body;
-    const { error, errorMessage, code } = await deleteUserById(userId);
-    if (error) {
-      res.status(code).json({
-        error,
-        errorMessage
-      });
-      return;
-    }
-
-    res.status(200).json({
-      error,
-      errorMessage,
-      message: `Successfully delete user with id ${userId}`
-    });
-  } catch (error) {
-    res.status(500).json({ error: true, message: error.toString() });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({ error: true, errors: errors.array() });
+    return;
   }
+
+  const { userId } = req.body;
+  const { error, errorMessage, code } = await deleteUserById(userId);
+  if (error) {
+    res.status(code).json({
+      error,
+      errorMessage
+    });
+    return;
+  }
+
+  res.status(200).json({
+    error,
+    errorMessage,
+    message: `Successfully delete user with id ${userId}`
+  });
 }
 
 async function updateUser(req, res) {
