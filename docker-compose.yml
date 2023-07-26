@@ -18,7 +18,19 @@ services:
       timeout: 20s
       retries: 10
 
-  database-services:
+  email-service:
+    container_name: email-service
+    build:
+      context: ./email-service
+      dockerfile: ./email-service.Dockerfile
+      args:
+        - APP_PORT=${EMAIL_SERVICE_PORT}
+    ports:
+      - ${EMAIL_SERVICE_PORT}:${EMAIL_SERVICE_PORT}
+    environment:
+      APP_PORT: ${EMAIL_SERVICE_PORT}
+
+  database-service:
     build:
       context: ./database-service
       dockerfile: ./database-service.Dockerfile
@@ -39,13 +51,15 @@ services:
       DB_NAME: ${DB_NAME}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DIALECT: ${DB_DIALECT}
-      WAIT_HOSTS: db:${DB_PORT}
+      WAIT_HOSTS: db:${DB_PORT}, email-service:${EMAIL_SERVICE_PORT}
       CRON_SEND_BIRTHDAY_INTERVAL_SEC: ${CRON_SEND_BIRTHDAY_INTERVAL_SEC}
       CRON_RESEND_BIRTHDAY_INTERVAL_SEC: ${CRON_RESEND_BIRTHDAY_INTERVAL_SEC}
       SENT_BIRTHDAY_AT_HOUR: ${SENT_BIRTHDAY_AT_HOUR}
     depends_on:
       db:
         condition: service_healthy
+      email-service:
+        condition: service_started 
 
 volumes:
   db-data:
