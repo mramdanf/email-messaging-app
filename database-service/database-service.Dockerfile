@@ -4,6 +4,9 @@ WORKDIR /app
 
 COPY package*.json ./
 
+## Add the wait script to the image
+COPY --from=ghcr.io/ufoscout/docker-compose-wait:latest /wait /wait
+
 RUN npm install
 
 COPY . .
@@ -21,7 +24,3 @@ ENV DB_NAME=${DB_NAME}
 ENV DB_PASSWORD=${DB_PASSWORD}
 ENV DB_DIALECT=${DB_DIALECT}
 ENV DB_PORT=${DB_PORT}
-
-# RUN npm run db:reset
-
-CMD ["npm", "start"]

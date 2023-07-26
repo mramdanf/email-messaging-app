@@ -13,7 +13,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     healthcheck:
-      test: "/usr/bin/mysql --user=root --password=${DB_PASSWORD} --execute \"SHOW DATABASES;\""
+      test: "/usr/bin/mysql --user=${DB_USERNAME} --password=${DB_PASSWORD} --execute \"SHOW DATABASES;\""
       interval: 2s
       timeout: 20s
       retries: 10
@@ -30,6 +30,7 @@ services:
         - DB_PASSWORD=${DB_PASSWORD}
         - DB_DIALECT=${DB_DIALECT}
         - DB_PORT=${DB_PORT}
+    command: sh -c "/wait && npm run db:reset && npm start"
     ports:
       - ${DATABASE_SERVICE_PORT}:${DATABASE_SERVICE_PORT}
     environment:
@@ -38,6 +39,7 @@ services:
       DB_NAME: ${DB_NAME}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DIALECT: ${DB_DIALECT}
+      WAIT_HOSTS: db:${DB_PORT}
     depends_on:
       db:
         condition: service_healthy
