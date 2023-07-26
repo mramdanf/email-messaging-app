@@ -14,7 +14,7 @@ app.use(express.json());
 app.use('/users', usersRouter);
 
 cron.schedule('*/10 * * * * *', cronSendBirthDayMessage);
-cron.schedule('*/10 * * * * *', cronResendMessageOnError);
+cron.schedule('*/15 * * * * *', cronResendMessageOnError);
 
 const port = process.env.APP_PORT || 3000;
 app.listen(port, () => {

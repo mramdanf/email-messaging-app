@@ -1,5 +1,9 @@
 const { MESSAGE_TYPES } = require('../contants');
-const { saveCronJobStatus } = require('./cron.utils');
+const {
+  saveCronJobStatus,
+  saveCronStatusSendBirtdayMessage,
+  saveCronStatusResendBirtdayMessage
+} = require('./cron.utils');
 const { sendMail } = require('./mail.utils');
 const {
   checkSendMessageLogByYear,
@@ -11,7 +15,7 @@ const { findMessageByType } = require('./message.utils');
 const { findAllUsers, getUserBirthDayAndLocale } = require('./user.utils');
 
 async function sendBirthDayMessage(sendAtHour) {
-  await saveCronJobStatus({ sendBirthDayMessage: { finished: false } });
+  await saveCronStatusSendBirtdayMessage(false);
 
   const findAllUserResult = await findAllUsers();
   console.log('geting all users data...');
@@ -85,11 +89,11 @@ async function sendBirthDayMessage(sendAtHour) {
       );
     }
   }
-  await saveCronJobStatus({ sendBirthDayMessage: { finished: true } });
+  await saveCronStatusSendBirtdayMessage(true);
 }
 
 async function resendMessageOnError() {
-  await saveCronJobStatus({ resendingMessageOnError: { finished: false } });
+  await saveCronStatusResendBirtdayMessage(false);
 
   const errorSendingMessages = await findSendMessageErrorLog();
   if (errorSendingMessages.error) {
@@ -139,7 +143,7 @@ async function resendMessageOnError() {
     }
   }
 
-  await saveCronJobStatus({ resendingMessageOnError: { finished: true } });
+  await saveCronStatusResendBirtdayMessage(true);
 }
 
 module.exports = {
