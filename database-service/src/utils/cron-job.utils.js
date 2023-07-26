@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { CRON_STATUS_TYPE } = require('../contants');
 const { checkCronJobFinished } = require('./cron.utils');
 const {
@@ -13,7 +14,7 @@ async function cronSendBirthDayMessage() {
   }
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(process.env.SENT_BIRTHDAY_AT_HOUR || 9);
+  sendBirthDayMessage(Number(process.env.SENT_BIRTHDAY_AT_HOUR) || 9);
 }
 
 async function cronResendMessageOnError() {

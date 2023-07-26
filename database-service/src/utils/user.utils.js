@@ -1,3 +1,4 @@
+process.env.TZ = 'Asia/Jakarta';
 const moment = require('moment-timezone');
 const { User } = require('../models');
 

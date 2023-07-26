@@ -1,6 +1,7 @@
 'use strict';
 
 const { faker } = require('@faker-js/faker');
+const momentTz = require('moment-timezone');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
         lastName: faker.person.lastName(),
         email: faker.internet.email(),
         location: 'Asia/Jakarta',
-        birthDayDate: '1994-07-26'
+        birthDayDate: `1994-${momentTz().tz('Asia/Jakarta').format('MM-DD')}`
       })),
       {}
     );

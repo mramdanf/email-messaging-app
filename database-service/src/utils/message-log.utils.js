@@ -1,3 +1,4 @@
+process.env.TZ = 'Asia/Jakarta';
 const moment = require('moment-timezone');
 const sequelize = require('sequelize');
 const { SendingMessagesStatus, Messages, User } = require('../models');
