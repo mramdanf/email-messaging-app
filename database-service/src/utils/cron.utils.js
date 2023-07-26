@@ -56,7 +56,7 @@ async function saveCronJobStatus(data) {
       JSON.stringify(rest, null, '\t')
     );
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 }
 
