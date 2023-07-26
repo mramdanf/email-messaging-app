@@ -1,24 +1,46 @@
 version: '3'
 
 services:
+  db:
+    container_name: db
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=${DB_PASSWORD} --execute \"SHOW DATABASES;\""
+      interval: 2s
+      timeout: 20s
+      retries: 10
+
   database-services:
     build:
       context: ./database-service
       dockerfile: ./database-service.Dockerfile
       args:
-        - APP_PORT=${APP_PORT}
+        - APP_PORT=${DATABASE_SERVICE_PORT}
+        - DB_USERNAME=${DB_USERNAME}
+        - DB_HOSTNAME=${DB_HOSTNAME}
+        - DB_NAME=${DB_NAME}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_DIALECT=${DB_DIALECT}
+        - DB_PORT=${DB_PORT}
     ports:
-      - ${APP_PORT}:${APP_PORT}
-    env_file:
-      - .env
-
-  mysql:
-    image: mysql:8.0
-    volumes:
-      - mysql-data:/var/lib/mysql
+      - ${DATABASE_SERVICE_PORT}:${DATABASE_SERVICE_PORT}
     environment:
-      MYSQL_ROOT_PASSWORD: 
-      MYSQL_DATABASE: email_messaging_app
+      DB_USERNAME: ${DB_USERNAME}
+      DB_HOSTNAME: ${DB_HOSTNAME}
+      DB_NAME: ${DB_NAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DIALECT: ${DB_DIALECT}
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
-  mysql-data:
+  db-data:

@@ -5,3 +5,4 @@ database-service/src/data
 database-service/coverage
 email-service/coverage
 email-service/node_modules
+db-data
