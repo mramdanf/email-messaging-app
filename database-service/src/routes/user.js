@@ -1,5 +1,5 @@
 const express = require('express');
-const { body, query } = require('express-validator');
+const { body } = require('express-validator');
 const { createAndUpdateRules } = require('../utils/misc.utils');
 
 const router = express.Router();
@@ -15,11 +15,5 @@ const userIdRules = body('userId')
 router.post(...createAndUpdateRules(userController.createUser));
 router.put(...createAndUpdateRules(userController.updateUser, [userIdRules]));
 router.delete('/', userIdRules, userController.deleteUser);
-
-router.get(
-  '/by-birthday',
-  query('date').isDate({ format: 'YYYY-MM-DD' }),
-  userController.getUsersByBirthDay
-);
 
 module.exports = router;
