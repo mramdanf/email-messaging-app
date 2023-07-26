@@ -1,6 +1,6 @@
 'use strict';
 
-const faker = require('faker');
+const { faker } = require('@faker-js/faker');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -17,8 +17,8 @@ module.exports = {
     await queryInterface.bulkInsert(
       'users',
       [...Array(100)].map(() => ({
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
         email: faker.internet.email(),
         location: 'Asia/Jakarta',
         birthDayDate: '1994-07-26'
