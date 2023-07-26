@@ -3,3 +3,4 @@ database-service/node_modules
 database-service/dist
 database-service/src/data
 database-service/coverage
+email-service/node_modules
