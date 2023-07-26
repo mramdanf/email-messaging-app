@@ -5,10 +5,8 @@ const {
 } = require('./send-message.utils');
 
 async function cronSendBirthDayMessage() {
-  const {
-    sendBirthDayMessage: { finished }
-  } = await checkCronJobFinished();
-  if (!finished) {
+  const cronStatus = await checkCronJobFinished();
+  if (!cronStatus.sendBirthDayMessage.finished) {
     console.log('cancel sending message, prev job not finished yet.');
     return;
   }
