@@ -42,6 +42,7 @@ async function sendBirthDayMessage(sendAtHour) {
     const messageResult = await findMessageByType(MESSAGE_TYPES.BIRTH_DAY);
     if (messageResult.error) {
       console.log(messageResult.errorMessage);
+      await saveCronJobStatus({ sendBirthDayMessage: { finished: true } });
       continue;
     }
 
@@ -91,9 +92,10 @@ async function resendMessageOnError() {
 
   const errorSendingMessages = await findSendMessageErrorLog();
   if (errorSendingMessages.error) {
-    console.error(
+    console.log(
       `will not resend message. ${errorSendingMessages.errorMessage}`
     );
+    await saveCronJobStatus({ resendingMessageOnError: { finished: true } });
     return;
   }
 
@@ -121,7 +123,7 @@ async function resendMessageOnError() {
       sendMailResult: resendMailResult
     });
     if (logSendingStatus.error) {
-      console.error(logSendingStatus.errorMessage);
+      console.log(logSendingStatus.errorMessage);
       continue;
     }
 
@@ -132,7 +134,7 @@ async function resendMessageOnError() {
     console.log('deleting successfully resend message...');
     const deleteMessage = await deleteSendMessageLog(log);
     if (deleteMessage.error) {
-      console.error(`Failed to delete message. ${deleteMessage.errorMessage}`);
+      console.log(`Failed to delete message. ${deleteMessage.errorMessage}`);
     }
   }
 
