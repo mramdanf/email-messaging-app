@@ -1,5 +1,4 @@
 const { validationResult } = require('express-validator');
-const { Op } = require('sequelize');
 const { User } = require('../models');
 const {
   createUser: createUserUtil,
@@ -77,36 +76,8 @@ async function updateUser(req, res) {
   }
 }
 
-async function getUsersByBirthDay(req, res) {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ error: true, errors: errors.array() });
-      return;
-    }
-
-    const birthDayDate = req.query.date;
-
-    const users = await User.findAll({
-      where: {
-        birthDayDate: {
-          [Op.eq]: new Date(birthDayDate)
-        }
-      }
-    });
-
-    res.status(200).json({
-      error: false,
-      users
-    });
-  } catch (error) {
-    res.status(500).json({ error: true, message: error.toString() });
-  }
-}
-
 module.exports = {
   createUser,
   deleteUser,
-  updateUser,
-  getUsersByBirthDay
+  updateUser
 };
