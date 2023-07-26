@@ -2,7 +2,8 @@
   "env": {
     "commonjs": true,
     "es6": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
   "globals": {
@@ -12,7 +13,7 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "jest"],
   "rules": {
     "prettier/prettier": ["error", { "singleQuote": true, "trailingComma": "none" }],
     "no-unused-vars": "error",
@@ -24,6 +25,11 @@
     "import/no-extraneous-dependencies": "off",
     "no-await-in-loop": "off",
     "strict": "off",
-    "no-continue": "off"
+    "no-continue": "off",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   }
 }

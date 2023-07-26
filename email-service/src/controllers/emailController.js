@@ -22,7 +22,7 @@ async function sendEmail(req, res) {
 
   const shouldTimeOut = faker.helpers.maybe(() => true, { probability: 0.1 });
   if (shouldTimeOut) {
-    setTimeout(() => {
+    await setTimeout(() => {
       res.end();
     }, 100000);
     return;

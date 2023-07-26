@@ -35,7 +35,7 @@ paths:
                 example: test@gmail.com
               message:
                 type: string
-                example: Hi, nice to meet you.
+                example: Hey, mohamad ramdan firdaus it's your birthday.
       responses:
         "200":
           description: Email sent successfull
