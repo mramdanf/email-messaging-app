@@ -8,8 +8,10 @@ RUN npm install
 
 COPY . .
 
-ENV PORT=8080
+ENV PORT=${APP_PORT}
 
-EXPOSE 8080
+EXPOSE ${APP_PORT}
+
+RUN npm run db:reset
 
 CMD ["npm", "start"]

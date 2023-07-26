@@ -5,16 +5,20 @@ services:
     build:
       context: ./database-service
       dockerfile: ./database-service.Dockerfile
+      args:
+        - APP_PORT=${APP_PORT}
     ports:
-      - "3000:3000"
+      - ${APP_PORT}:${APP_PORT}
+    env_file:
+      - .env
 
   mysql:
     image: mysql:8.0
     volumes:
       - mysql-data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: todos
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: email_messaging_app
 
 volumes:
   mysql-data:
