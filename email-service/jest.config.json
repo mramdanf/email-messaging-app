@@ -8,6 +8,8 @@
     "text-summary"
   ],
   "coveragePathIgnorePatterns": [
-    "node_modules"
+    "node_modules",
+    "src/app.js",
+    "src/routes/index.js"
   ]
 }

@@ -69,4 +69,24 @@ describe('send email', () => {
     expect(mockResEnd).toHaveBeenCalled();
     jest.useRealTimers();
   });
+
+  it('able response 200', async () => {
+    expressValidator.validationResult.mockReturnValueOnce({
+      isEmpty: jest.fn().mockReturnValue(true),
+      array: jest.fn().mockReturnValue([])
+    });
+
+    const mockRes = {};
+    mockRes.json = jest.fn();
+    mockRes.status = jest.fn(() => mockRes);
+    const mockResEnd = jest.fn();
+    mockRes.end = mockResEnd;
+
+    faker.faker.helpers.maybe.mockReturnValueOnce(false);
+    faker.faker.helpers.maybe.mockReturnValueOnce(false);
+
+    await sendEmail({}, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+  });
 });
