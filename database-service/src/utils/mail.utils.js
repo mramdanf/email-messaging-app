@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-const baseUrl = 'https://email-service.digitalenvision.com.au';
+// const baseUrl = 'https://email-service.digitalenvision.com.au';
+const baseUrl = 'http://localhost:3001';
 
 async function sendMail({ user, message }) {
   try {

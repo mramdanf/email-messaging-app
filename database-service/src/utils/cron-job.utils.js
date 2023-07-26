@@ -13,7 +13,7 @@ async function cronSendBirthDayMessage() {
   }
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(16);
+  sendBirthDayMessage(21);
 }
 
 async function cronResendMessageOnError() {
