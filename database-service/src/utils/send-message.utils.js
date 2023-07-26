@@ -41,7 +41,7 @@ async function sendBirthDayMessage(sendAtHour) {
     console.log('finding message detail...');
     const messageResult = await findMessageByType(MESSAGE_TYPES.BIRTH_DAY);
     if (messageResult.error) {
-      console.error(messageResult.errorMessage);
+      console.log(messageResult.errorMessage);
       continue;
     }
 
@@ -63,7 +63,7 @@ async function sendBirthDayMessage(sendAtHour) {
     console.log('sending mail through mail service...');
     const sendMailResult = await sendMail({ user, message });
     if (sendMailResult.error) {
-      console.error(sendMailResult.errorMessage);
+      console.log(sendMailResult.errorMessage);
     }
 
     console.log('logging send mail status...');
@@ -73,7 +73,7 @@ async function sendBirthDayMessage(sendAtHour) {
       sendMailResult
     });
     if (logSendingStatus.error) {
-      console.error(logSendingStatus.errorMessage);
+      console.log(logSendingStatus.errorMessage);
       continue;
     }
 
