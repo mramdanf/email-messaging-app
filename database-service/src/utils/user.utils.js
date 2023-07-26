@@ -47,6 +47,7 @@ async function deleteUserById(userId) {
       return {
         error: true,
         errorMessage: `No user found with id ${userId}`,
+        message: '',
         code: 404
       };
     }
@@ -54,12 +55,52 @@ async function deleteUserById(userId) {
     return {
       error: false,
       errorMessage: '',
+      message: `Successfully delete user with id ${userId}`,
       code: 200
     };
   } catch (error) {
     return {
       error: true,
       errorMessage: error.toString(),
+      message: '',
+      code: 500
+    };
+  }
+}
+
+async function updateUserById(payload) {
+  try {
+    const { userId, ...rest } = payload;
+
+    const result = await User.update(
+      { ...rest },
+      {
+        where: {
+          id: userId
+        }
+      }
+    );
+
+    if (!result) {
+      return {
+        error: true,
+        errorMessage: `No user found with id ${userId}`,
+        message: '',
+        code: 404
+      };
+    }
+
+    return {
+      error: false,
+      errorMessage: '',
+      message: `Successfully update the user with id ${userId}`,
+      code: 200
+    };
+  } catch (error) {
+    return {
+      error: true,
+      errorMessage: error.toString(),
+      message: '',
       code: 500
     };
   }
@@ -88,5 +129,6 @@ module.exports = {
   findAllUsers,
   getUserBirthDayAndLocale,
   createUser,
-  deleteUserById
+  deleteUserById,
+  updateUserById
 };

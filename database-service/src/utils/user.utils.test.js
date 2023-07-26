@@ -2,7 +2,8 @@ const {
   findAllUsers,
   getUserBirthDayAndLocale,
   createUser,
-  deleteUserById
+  deleteUserById,
+  updateUserById
 } = require('./user.utils');
 const models = require('../models');
 
@@ -64,7 +65,7 @@ describe('create user', () => {
 });
 
 describe('delete user by id', () => {
-  it('no success', async () => {
+  it('on success', async () => {
     models.User.destroy.mockReturnValue(1);
     const res = await deleteUserById(1);
     expect(res.error).toBeFalsy();
@@ -77,6 +78,44 @@ describe('delete user by id', () => {
     });
     const res = await deleteUserById(1);
     expect(res.error).toBeTruthy();
+    expect(res.errorMessage).toBeTruthy();
+  });
+
+  it('on user not found', async () => {
+    models.User.destroy.mockReturnValue(0);
+    const res = await deleteUserById(10);
+    expect(res.error).toBeTruthy();
+    expect(res.errorMessage).toBeTruthy();
+  });
+});
+
+describe('update user by id', () => {
+  it('on success', async () => {
+    models.User.update.mockReturnValue(1);
+    const res = await updateUserById({ userId: 1, firstName: 'test' });
+    expect(res.error).toBeFalsy();
+    expect(res.errorMessage).toBeFalsy();
+    expect(res.code).toBe(200);
+    expect(res.message).toBeTruthy();
+  });
+
+  it('on error', async () => {
+    models.User.update.mockImplementation(() => {
+      throw new Error('some db error');
+    });
+    const res = await updateUserById(1);
+    expect(res.error).toBeTruthy();
+    expect(res.code).toBe(500);
+    expect(res.errorMessage).toBeTruthy();
+    expect(res.message).toBeFalsy();
+  });
+
+  it('on user not found', async () => {
+    models.User.update.mockReturnValue(0);
+    const res = await updateUserById({ userId: 2, firstName: 'test' });
+    expect(res.error).toBeTruthy();
+    expect(res.code).toBe(404);
+    expect(res.message).toBeFalsy();
     expect(res.errorMessage).toBeTruthy();
   });
 });

@@ -1,8 +1,8 @@
 const { validationResult } = require('express-validator');
-const { User } = require('../models');
 const {
   createUser: createUserUtil,
-  deleteUserById
+  deleteUserById,
+  updateUserById
 } = require('../utils/user.utils');
 
 async function createUser(req, res) {
@@ -33,7 +33,7 @@ async function deleteUser(req, res) {
   }
 
   const { userId } = req.body;
-  const { error, errorMessage, code } = await deleteUserById(userId);
+  const { error, errorMessage, code, message } = await deleteUserById(userId);
   if (error) {
     res.status(code).json({
       error,
@@ -42,10 +42,10 @@ async function deleteUser(req, res) {
     return;
   }
 
-  res.status(200).json({
+  res.status(code).json({
     error,
     errorMessage,
-    message: `Successfully delete user with id ${userId}`
+    message
   });
 }
 
@@ -57,19 +57,21 @@ async function updateUser(req, res) {
       return;
     }
 
-    const { userId, ...rest } = req.body;
-
-    await User.update(
-      { ...rest },
-      {
-        where: {
-          id: userId
-        }
-      }
+    const { error, errorMessage, code, message } = await updateUserById(
+      req.body
     );
-    res.status(200).json({
-      error: false,
-      message: `Successfully update the user with id ${userId}`
+    if (error) {
+      res.status(code).json({
+        error,
+        errorMessage
+      });
+      return;
+    }
+
+    res.status(code).json({
+      error,
+      message,
+      errorMessage
     });
   } catch (error) {
     res.status(500).json({ error: true, message: error.toString() });
