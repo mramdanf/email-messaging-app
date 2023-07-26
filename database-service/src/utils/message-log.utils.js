@@ -18,7 +18,7 @@ async function deleteSendMessageLog(log) {
     };
   } catch (error) {
     return {
-      error: false,
+      error: true,
       errorMessage: error.toString()
     };
   }
