@@ -17,6 +17,7 @@ async function sendBirthDayMessage(sendAtHour) {
   console.log('geting all users data...');
   if (findAllUserResult.error) {
     console.error(findAllUserResult.errorMessage);
+    await saveCronJobStatus({ sendBirthDayMessage: { finished: true } });
     return;
   }
 

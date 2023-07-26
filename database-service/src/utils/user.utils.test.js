@@ -1,4 +1,8 @@
-const { findAllUsers, getUserBirthDayAndLocale } = require('./user.utils');
+const {
+  findAllUsers,
+  getUserBirthDayAndLocale,
+  createUser
+} = require('./user.utils');
 const models = require('../models');
 
 jest.mock('../models');
@@ -24,14 +28,36 @@ describe('findAllUsers function', () => {
 });
 
 describe('get user birth day and locale data', () => {
-  const res = getUserBirthDayAndLocale({
-    birthDayDate: '1994-08-05',
-    location: 'Asia/Jakarta'
+  it('return correct value', () => {
+    const res = getUserBirthDayAndLocale({
+      birthDayDate: '1994-08-05',
+      location: 'Asia/Jakarta'
+    });
+    Object.keys(res.birthDay).forEach((key) => {
+      expect(res.birthDay[key]).toBeTruthy();
+    });
+    Object.keys(res.locale).forEach((key) => {
+      expect(res.locale[key]).toBeTruthy();
+    });
   });
-  Object.keys(res.birthDay).forEach((key) => {
-    expect(res.birthDay[key]).toBeTruthy();
+});
+
+describe('create user', () => {
+  it('no success', async () => {
+    models.User.create.mockReturnValue({ id: 1, firstName: 'ramdan' });
+    const res = await createUser();
+    expect(res.error).toBeFalsy();
+    expect(res.errorMessage).toBeFalsy();
+    expect(Object.keys(res.user).length).toBeTruthy();
   });
-  Object.keys(res.locale).forEach((key) => {
-    expect(res.locale[key]).toBeTruthy();
+
+  it('on error', async () => {
+    models.User.create.mockImplementation(() => {
+      throw new Error('some db error');
+    });
+    const res = await createUser();
+    expect(res.error).toBeTruthy();
+    expect(res.errorMessage).toBeTruthy();
+    expect(Object.keys(res.user).length).toBeFalsy();
   });
 });

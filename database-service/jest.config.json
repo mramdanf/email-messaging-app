@@ -11,6 +11,7 @@
     "node_modules",
     "src/migrations",
     "src/seeder",
-    "src/app.js"
+    "src/app.js",
+    "src/routes/user.js"
   ]
 }

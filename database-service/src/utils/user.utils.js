@@ -18,6 +18,23 @@ async function findAllUsers() {
   }
 }
 
+async function createUser(payload) {
+  try {
+    const user = await User.create({ ...payload });
+    return {
+      error: false,
+      errorMessage: '',
+      user
+    };
+  } catch (error) {
+    return {
+      error: true,
+      errorMessage: error.toString(),
+      user: {}
+    };
+  }
+}
+
 function getUserBirthDayAndLocale(user) {
   const birthDay = {
     month: moment(user.birthDayDate).month() + 1,
@@ -39,5 +56,6 @@ function getUserBirthDayAndLocale(user) {
 
 module.exports = {
   findAllUsers,
-  getUserBirthDayAndLocale
+  getUserBirthDayAndLocale,
+  createUser
 };
