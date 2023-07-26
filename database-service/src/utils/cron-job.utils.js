@@ -13,7 +13,7 @@ async function cronSendBirthDayMessage() {
   }
   console.log('---------------------');
   console.log('send birthday message scheduler running...');
-  sendBirthDayMessage(22);
+  sendBirthDayMessage(process.env.SENT_BIRTHDAY_AT_HOUR || 9);
 }
 
 async function cronResendMessageOnError() {

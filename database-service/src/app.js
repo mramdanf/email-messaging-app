@@ -22,8 +22,19 @@ app.use(express.json());
 app.use('/users', usersRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-cron.schedule('*/10 * * * * *', cronSendBirthDayMessage);
-cron.schedule('*/15 * * * * *', cronResendMessageOnError);
+const cronTimeSendBirthDayInSec =
+  process.env.CRON_SEND_BIRTHDAY_INTERVAL_SEC || 36000;
+const cronTimeResendBirthDayInSec =
+  process.env.CRON_RESEND_BIRTHDAY_INTERVAL_SEC || 36000;
+
+cron.schedule(
+  `*/${cronTimeSendBirthDayInSec} * * * * *`,
+  cronSendBirthDayMessage
+);
+cron.schedule(
+  `*/${cronTimeResendBirthDayInSec} * * * * *`,
+  cronResendMessageOnError
+);
 
 const port = process.env.APP_PORT || 3000;
 app.listen(port, () => {
