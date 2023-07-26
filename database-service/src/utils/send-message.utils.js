@@ -21,7 +21,7 @@ async function sendBirthDayMessage(sendAtHour) {
   console.log('geting all users data...');
   if (findAllUserResult.error) {
     console.log(findAllUserResult.errorMessage);
-    await saveCronJobStatus({ sendBirthDayMessage: { finished: true } });
+    await saveCronStatusSendBirtdayMessage(true);
     return;
   }
 
@@ -100,7 +100,7 @@ async function resendMessageOnError() {
     console.log(
       `will not resend message. ${errorSendingMessages.errorMessage}`
     );
-    await saveCronJobStatus({ resendingMessageOnError: { finished: true } });
+    await saveCronStatusResendBirtdayMessage(true);
     return;
   }
 

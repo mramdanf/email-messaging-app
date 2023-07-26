@@ -69,8 +69,8 @@ describe('send birth day message', () => {
     await sendBirthDayMessage(9);
 
     // matcher
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ sendBirthDayMessage: { finished: false } })
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      false
     );
     expect(userUtils.findAllUsers).toHaveBeenCalled();
     expect(userUtils.getUserBirthDayAndLocale).toHaveBeenCalled();
@@ -78,8 +78,8 @@ describe('send birth day message', () => {
     expect(messageLogUtils.checkSendMessageLogByYear).toHaveBeenCalled();
     expect(mailUtils.sendMail).toHaveBeenCalled();
     expect(messageLogUtils.createSendMessageLog).toHaveBeenCalled();
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[1][0])).toBe(
-      JSON.stringify({ sendBirthDayMessage: { finished: true } })
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      true
     );
   });
   it('should not send mail if condition unsatisfied', async () => {
@@ -90,12 +90,15 @@ describe('send birth day message', () => {
 
     await sendBirthDayMessage(9);
 
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ sendBirthDayMessage: { finished: false } })
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      false
     );
     expect(userUtils.findAllUsers).toHaveBeenCalled();
     expect(userUtils.getUserBirthDayAndLocale).toHaveBeenCalled();
     expect(messageUtils.findMessageByType).not.toHaveBeenCalled();
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      true
+    );
   });
   it('should not send mail if failed to get message detail', async () => {
     mockCalledFunctions({
@@ -104,13 +107,16 @@ describe('send birth day message', () => {
 
     await sendBirthDayMessage(9);
 
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ sendBirthDayMessage: { finished: false } })
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      false
     );
     expect(userUtils.findAllUsers).toHaveBeenCalled();
     expect(userUtils.getUserBirthDayAndLocale).toHaveBeenCalled();
     expect(messageUtils.findMessageByType).toHaveBeenCalled();
     expect(messageLogUtils.checkSendMessageLogByYear).not.toHaveBeenCalled();
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      true
+    );
   });
   it('should not send mail if email already sent', async () => {
     mockCalledFunctions({
@@ -119,14 +125,17 @@ describe('send birth day message', () => {
 
     await sendBirthDayMessage(9);
 
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ sendBirthDayMessage: { finished: false } })
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      true
     );
     expect(userUtils.findAllUsers).toHaveBeenCalled();
     expect(userUtils.getUserBirthDayAndLocale).toHaveBeenCalled();
     expect(messageUtils.findMessageByType).toHaveBeenCalled();
     expect(messageLogUtils.checkSendMessageLogByYear).toHaveBeenCalled();
     expect(mailUtils.sendMail).not.toHaveBeenCalled();
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      true
+    );
   });
   it('should log sending status even if email failed to be sent', async () => {
     mockCalledFunctions({
@@ -135,8 +144,8 @@ describe('send birth day message', () => {
 
     await sendBirthDayMessage(9);
 
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ sendBirthDayMessage: { finished: false } })
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      false
     );
     expect(userUtils.findAllUsers).toHaveBeenCalled();
     expect(userUtils.getUserBirthDayAndLocale).toHaveBeenCalled();
@@ -144,6 +153,9 @@ describe('send birth day message', () => {
     expect(messageLogUtils.checkSendMessageLogByYear).toHaveBeenCalled();
     expect(mailUtils.sendMail).toHaveBeenCalled();
     expect(messageLogUtils.createSendMessageLog).toHaveBeenCalled();
+    expect(cronUtils.saveCronStatusSendBirtdayMessage).toHaveBeenCalledWith(
+      true
+    );
   });
 });
 
@@ -193,16 +205,15 @@ describe('resend message on error', () => {
     await resendMessageOnError();
 
     // matcher
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: false } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      false
     );
     expect(messageLogUtils.findSendMessageErrorLog).toHaveBeenCalled();
     expect(mailUtils.sendMail).toHaveBeenCalled();
     expect(messageLogUtils.createSendMessageLog).toHaveBeenCalled();
     expect(messageLogUtils.deleteSendMessageLog).toHaveBeenCalled();
-    // console.log(cronUtils.saveCronJobStatus.mock.calls[0])
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[1][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: true } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      true
     );
   });
   it('shold not send mail if there is no message with error', async () => {
@@ -212,13 +223,13 @@ describe('resend message on error', () => {
     await resendMessageOnError();
 
     // matcher
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: false } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      false
     );
     expect(messageLogUtils.findSendMessageErrorLog).toHaveBeenCalled();
     expect(mailUtils.sendMail).not.toHaveBeenCalled();
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[1][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: true } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      true
     );
   });
   it('do not delete message with error log if send mail still failed', async () => {
@@ -228,15 +239,15 @@ describe('resend message on error', () => {
     await resendMessageOnError();
 
     // matcher
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: false } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      true
     );
     expect(messageLogUtils.findSendMessageErrorLog).toHaveBeenCalled();
     expect(mailUtils.sendMail).toHaveBeenCalled();
     expect(messageLogUtils.createSendMessageLog).not.toHaveBeenCalled();
     expect(messageLogUtils.deleteSendMessageLog).not.toHaveBeenCalled();
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[1][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: true } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      true
     );
   });
 
@@ -247,15 +258,15 @@ describe('resend message on error', () => {
     await resendMessageOnError();
 
     // matcher
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[0][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: false } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      false
     );
     expect(messageLogUtils.findSendMessageErrorLog).toHaveBeenCalled();
     expect(mailUtils.sendMail).toHaveBeenCalled();
     expect(messageLogUtils.createSendMessageLog).toHaveBeenCalled();
     expect(messageLogUtils.deleteSendMessageLog).not.toHaveBeenCalled();
-    expect(JSON.stringify(cronUtils.saveCronJobStatus.mock.calls[1][0])).toBe(
-      JSON.stringify({ resendingMessageOnError: { finished: true } })
+    expect(cronUtils.saveCronStatusResendBirtdayMessage).toHaveBeenCalledWith(
+      true
     );
   });
 });
