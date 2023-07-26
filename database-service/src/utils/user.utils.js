@@ -35,6 +35,36 @@ async function createUser(payload) {
   }
 }
 
+async function deleteUserById(userId) {
+  try {
+    const deletedUser = await User.destroy({
+      where: {
+        id: userId
+      }
+    });
+
+    if (!deletedUser) {
+      return {
+        error: true,
+        errorMessage: `No user found with id ${userId}`,
+        code: 404
+      };
+    }
+
+    return {
+      error: false,
+      errorMessage: '',
+      code: 200
+    };
+  } catch (error) {
+    return {
+      error: true,
+      errorMessage: error.toString(),
+      code: 500
+    };
+  }
+}
+
 function getUserBirthDayAndLocale(user) {
   const birthDay = {
     month: moment(user.birthDayDate).month() + 1,
@@ -57,5 +87,6 @@ function getUserBirthDayAndLocale(user) {
 module.exports = {
   findAllUsers,
   getUserBirthDayAndLocale,
-  createUser
+  createUser,
+  deleteUserById
 };

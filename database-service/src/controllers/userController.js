@@ -1,7 +1,10 @@
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 const { User } = require('../models');
-const { createUser: createUserUtil } = require('../utils/user.utils');
+const {
+  createUser: createUserUtil,
+  deleteUserById
+} = require('../utils/user.utils');
 
 async function createUser(req, res) {
   const errors = validationResult(req);
@@ -32,22 +35,18 @@ async function deleteUser(req, res) {
     }
 
     const { userId } = req.body;
-
-    const deletedUser = await User.destroy({
-      where: {
-        id: userId
-      }
-    });
-
-    if (!deletedUser) {
-      res
-        .status(404)
-        .json({ error: true, message: `No user found with id ${userId}` });
+    const { error, errorMessage, code } = await deleteUserById(userId);
+    if (error) {
+      res.status(code).json({
+        error,
+        errorMessage
+      });
       return;
     }
 
     res.status(200).json({
-      error: false,
+      error,
+      errorMessage,
       message: `Successfully delete user with id ${userId}`
     });
   } catch (error) {

@@ -1,7 +1,8 @@
 const {
   findAllUsers,
   getUserBirthDayAndLocale,
-  createUser
+  createUser,
+  deleteUserById
 } = require('./user.utils');
 const models = require('../models');
 
@@ -59,5 +60,23 @@ describe('create user', () => {
     expect(res.error).toBeTruthy();
     expect(res.errorMessage).toBeTruthy();
     expect(Object.keys(res.user).length).toBeFalsy();
+  });
+});
+
+describe('delete user by id', () => {
+  it('no success', async () => {
+    models.User.destroy.mockReturnValue(1);
+    const res = await deleteUserById(1);
+    expect(res.error).toBeFalsy();
+    expect(res.errorMessage).toBeFalsy();
+  });
+
+  it('on error', async () => {
+    models.User.destroy.mockImplementation(() => {
+      throw new Error('some db error');
+    });
+    const res = await deleteUserById(1);
+    expect(res.error).toBeTruthy();
+    expect(res.errorMessage).toBeTruthy();
   });
 });
