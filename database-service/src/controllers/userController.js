@@ -50,32 +50,26 @@ async function deleteUser(req, res) {
 }
 
 async function updateUser(req, res) {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ error: true, errors: errors.array() });
-      return;
-    }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({ error: true, errors: errors.array() });
+    return;
+  }
 
-    const { error, errorMessage, code, message } = await updateUserById(
-      req.body
-    );
-    if (error) {
-      res.status(code).json({
-        error,
-        errorMessage
-      });
-      return;
-    }
-
+  const { error, errorMessage, code, message } = await updateUserById(req.body);
+  if (error) {
     res.status(code).json({
       error,
-      message,
       errorMessage
     });
-  } catch (error) {
-    res.status(500).json({ error: true, message: error.toString() });
+    return;
   }
+
+  res.status(code).json({
+    error,
+    message,
+    errorMessage
+  });
 }
 
 module.exports = {
