@@ -29,6 +29,34 @@ paths:
           schema:
             $ref: "#/definitions/CreateUser"
       responses:
+        '200':
+          description: Successfull operation
+          schema:
+            properties:
+              error:
+                type: boolean
+                example: false
+              errorMessage:
+                type: string
+                example: ''
+              user:
+                properties:
+                  userId:
+                    type: number
+                    example: 1
+                  firstName:
+                    type: string
+                    example: John
+                  lastName:
+                    type: string
+                    example: Doe
+                  email:
+                    type: string
+                    example: jhon.doe@gmail.com
+                  location:
+                    type: string
+                    description: Time zone identifier i.e Asia/Jakarta
+                    example: "Asia/Jakarta"
         "400":
           description: Invalid body parameter
         "500":
@@ -53,6 +81,19 @@ paths:
               userId:
                 type: string
       responses:
+        "200":
+          description: Successfull operation
+          schema:
+            properties:
+              error:
+                type: boolean
+                example: false
+              errorMessage:
+                type: string
+                example: ''
+              message:
+                type: string
+                example: Successfully delete user with id 1
         "400":
           description: Invalid userId supplied in delete body
         "404":
@@ -77,6 +118,19 @@ paths:
           schema:
             $ref: "#/definitions/UpdateUser"
       responses:
+        "200":
+          description: Successfull operation
+          schema:
+            properties:
+              error:
+                type: boolean
+                example: false
+              errorMessage:
+                type: string
+                example: ''
+              message:
+                type: string
+                example: Successfully update the user with id 1
         "400":
           description: Invalid body parameter
         "404":
@@ -88,23 +142,32 @@ definitions:
     properties:
       firstName:
         type: string
+        example: John
       lastName:
         type: string
+        example: Doe
       email:
         type: string
+        example: jhon.doe@gmail.com
       location:
         type: string
         description: Time zone identifier i.e Asia/Jakarta
+        example: "Asia/Jakarta"
   UpdateUser:
     properties:
       userId:
         type: number
+        example: 1
       firstName:
         type: string
+        example: John
       lastName:
         type: string
+        example: Doe
       email:
         type: string
+        example: jhon.doe@gmail.com
       location:
         type: string
         description: Time zone identifier i.e Asia/Jakarta
+        example: "Asia/Jakarta"

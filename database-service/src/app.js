@@ -20,7 +20,13 @@ const swaggerDocument = YAML.parse(swaggerFile);
 
 app.use(express.json());
 app.use('/user', usersRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    customSiteTitle: 'Email messaging app service'
+  })
+);
 
 const cronTimeSendBirthDayInSec =
   process.env.CRON_SEND_BIRTHDAY_INTERVAL_SEC || 36000;

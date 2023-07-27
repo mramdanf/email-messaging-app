@@ -23,7 +23,11 @@ app.use(express.json());
 app.use(haltOnTimedout);
 app.use('/', mainRouter);
 app.use(haltOnTimedout);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, { customSiteTitle: 'Email Service' })
+);
 
 const port = process.env.APP_PORT || 3001;
 app.listen(port, () => {
