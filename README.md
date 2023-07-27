@@ -1,28 +1,28 @@
 Hi, [Ramdan](https://www.linkedin.com/in/mohamad-ramdan-firdaus-25a24381/) here, this is simple application to send a happy birthday message to users on their birthday at exactly 9 am on their local times. This app is a task for coding test at surya digital teknologi
 
 ## What I have accomplished
-### Created a scheduler to send birth day message
+### Created a scheduler to send birth day message :white_check_mark:
 Scheduler will running every hour and get users list to check if there are users need to be send a birthday message. Next scheduler will only running if previous scheduler finished the job, this will prevent race condition.
 
-### Created a scheduler to re-send unsuccessfull messages
+### Created a scheduler to re-send unsuccessfull messages :white_check_mark:
 Scheduler will running every hour and get list of messages that failed to be sent, try re-send the message and update the message status to success if it's successfully sent.
 
-### Create simple API for user management
+### Create simple API for user management :white_check_mark:
 POST /user to create new user, DELETE /user to delete a user and PUT /user to update user. API doc can be found at [localhost:3000/api-docs/](http://localhost:3000/api-docs/)
 
-### Created simple email service
+### Created simple email service :white_check_mark:
 POST /send-mail to mimic sending email service, POST /send-mail will return 10% error 500 and 10% server timeout. API doc can be found at [localhost:3001/api-docs/](http://localhost:3001/api-docs/)
 
-### Abstracted code as possible
+### Abstracted code as possible :white_check_mark:
 Isolate and make code as modular as possible so it will be easy for unit testing
 
-### Most of the functions are tested
+### Most of the functions are tested :white_check_mark:
 Implemented testable code, most of the funcions is tested. Resulting in code coverage for statements 96% for `database-service` and 90% for `email-service` excluded file that have less to no logic and library generated files.
 
-### Dockerize the application
+### Dockerize the application :white_check_mark:
 Implemented simple microservice architechture for scalability and consistency when deploying the sistem
 
-### Added eslint and prettier
+### Added eslint and prettier :white_check_mark:
 Added these two library to support consistencies on code writing
 
 ## Requirement to run the app
