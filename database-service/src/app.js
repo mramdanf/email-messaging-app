@@ -19,7 +19,7 @@ const swaggerFile = fs.readFileSync(swaggerFilePath, 'utf8');
 const swaggerDocument = YAML.parse(swaggerFile);
 
 app.use(express.json());
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const cronTimeSendBirthDayInSec =
