@@ -36,10 +36,10 @@ Added these two library to support consistencies on code writing
 - run `docker-compose up --build -d`
 - application will be available in [localhost:3000/api-docs/](http://localhost:3000/api-docs/) and [localhost:3001/api-docs/](http://localhost:3001/api-docs/)
 
-## Verifying send birthday message behaviour
+## Verifiying send birthday message behaviour
 I have a users seeder that will populate `users` table with fake data and set their birthday month and date to today month and date (Asia/Jakarta). We need to set `SENT_BIRTHDAY_AT_HOUR` current hour, after that the scheduler should send the message to every user
 
-### Verifying message log
+### Verifiying message log
 When scheduler start sending message the log will be available in `sendMessagesStatus` table, we can check with below query
 ```
 SELECT 
@@ -51,7 +51,7 @@ INNER JOIN sendingMessagesStatus as log
 	ON u.id = log.userId
 ```
 
-### Verifying duplicate message
+### Verifiying duplicate message
 To check if any duplicate message was sent we can use below query to see if there is more than one message is sent to the same user.
 ```
 SELECT 
@@ -62,7 +62,7 @@ GROUP BY userId
 HAVING count(userId) > 1;
 ```
 
-### Verifying scheduler to resend message
+### Verifiying scheduler to resend message
 To check if scheduler able to resend failure message we can regulary check the message log table (`sendMessagesStatus`) and see the `sentStatus` colum at some point there will be no more message with `sentStatus` = `error`.
 ```
 SELECT 
@@ -74,7 +74,7 @@ INNER JOIN sendingMessagesStatus as log
 	ON u.id = log.userId
 ```
 
-## Verifying the users and email service endpoint
+## Verifiying the users and email service endpoint
 Please go the api docs for more detail, [users endpoint api docs](http://localhost:3000/api-docs/), [email service endpoint api docs](http://localhost:3001/api-docs/)
 
 
